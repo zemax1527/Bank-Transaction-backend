@@ -1,5 +1,6 @@
 const userModel = require('../model/user.model')
 const jwt = require('jsonwebtoken')
+const { sendRegistrationEmail } = require('../services/email.service')
 
  async function userRegisterController(req, res) {
     const { name, email, password } = req.body
@@ -29,6 +30,8 @@ const jwt = require('jsonwebtoken')
         email : user.email,
 
     })
+
+    await sendRegistrationEmail(user.email, user.name)
 }
 
 async function userLoginController(req, res) {
@@ -40,7 +43,7 @@ async function userLoginController(req, res) {
             message : 'user not found !'
         })
     }
-    const isValidPassword = user.comparePassword(password)
+    const isValidPassword = await user.comparePassword(password)
 
     if(!isValidPassword){
         res.status(401).json({
