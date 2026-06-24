@@ -6,7 +6,7 @@ async function  connectDb(req, res) {
          console.log('database connected successfully')
     })
     .catch(err=>{
-        console.log("error connected to db")
+        console.log("error connected to db", err)
         process.exit(1)
     })
     
